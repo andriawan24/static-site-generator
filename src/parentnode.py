@@ -10,9 +10,12 @@ class ParentNode(HTMLNode):
         
         child_html = ""
         for child in self.children:
+            if child.value == None:
+                raise ValueError("All child must have value")
+            
             child_html += child.to_html()
 
-        return f"<{self.tag}>{child_html}</{self.tag}>"
+        return f"<{self.tag}{self.props_to_html()}>{child_html}</{self.tag}>"
         
 
 
