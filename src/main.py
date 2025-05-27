@@ -1,9 +1,13 @@
 import os
 import shutil
 import blocks
+import sys
+
+basepath = sys.argv[1]
 
 def get_directory(folder_name):
-    return os.path.join(os.getcwd(), f"{folder_name}")
+    print(basepath)
+    return os.path.join(basepath, f"{folder_name}")
 
 def check_directory_exists(directory):
     return os.path.exists(directory)
@@ -58,6 +62,8 @@ def generate_page(from_path, dest_path, template_path):
 
             title = extract_title(content)
             new_html = html_template.replace("{{ Title }}", title).replace("{{ Content }}", content_html)
+            new_html = new_html.replace("href=\"/", f"href=\"{basepath}")
+            new_html = new_html.replace("src=\"/", f"src=\"{basepath}")
 
             dest_file = os.path.join(dest_path, 'index.html')
             new_html_file = open(dest_file, "x")
@@ -73,10 +79,11 @@ def generate_page(from_path, dest_path, template_path):
     html_file.close()
 
 def main():
+
     copy_static_dir()
-    source_path = os.path.join(os.getcwd(), "content")
-    destination_path = os.path.join(os.getcwd(), "public")
-    template_path = os.path.join(os.getcwd(), "template.html")
+    source_path = os.path.join(basepath, "content")
+    destination_path = os.path.join(basepath, "docs")
+    template_path = os.path.join(basepath, "template.html")
     generate_page(source_path, destination_path, template_path)
 
 main()
