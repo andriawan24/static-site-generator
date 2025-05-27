@@ -3,11 +3,10 @@ import shutil
 import blocks
 import sys
 
-basepath = sys.argv[1]
+default_basepath = "/"
 
 def get_directory(folder_name):
-    print(basepath)
-    return os.path.join(basepath, f"{folder_name}")
+    return os.path.join(f"./{folder_name}")
 
 def check_directory_exists(directory):
     return os.path.exists(directory)
@@ -42,7 +41,7 @@ def extract_title(markdown):
             return split.lstrip("# ")
     raise ValueError("title is not valid")
 
-def generate_page(from_path, dest_path, template_path):
+def generate_page(from_path, dest_path, template_path, basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}\n\n")
 
     if not os.path.exists(dest_path):
@@ -74,16 +73,18 @@ def generate_page(from_path, dest_path, template_path):
         else:
             new_source_path = os.path.join(from_path, file)
             new_destination_path = os.path.join(dest_path, file)
-            generate_page(new_source_path, new_destination_path, template_path)
+            generate_page(new_source_path, new_destination_path, template_path, basepath)
 
     html_file.close()
 
 def main():
-
+    basepath = default_basepath
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
     copy_static_dir()
-    source_path = os.path.join(basepath, "content")
-    destination_path = os.path.join(basepath, "docs")
-    template_path = os.path.join(basepath, "template.html")
-    generate_page(source_path, destination_path, template_path)
+    source_path = os.path.join("./content")
+    destination_path = os.path.join("./docs")
+    template_path = os.path.join("./template.html")
+    generate_page(source_path, destination_path, template_path, basepath)
 
 main()
