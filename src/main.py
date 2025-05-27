@@ -2,7 +2,7 @@ from textnode import TextNode, TextType
 import utils
 
 def main():
-    node = TextNode(text="This is a image", text_type=TextType.IMAGE, url="https://google.com")
-    print(utils.text_node_to_html_code(node).to_html())
+    text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+    print(utils.extract_markdown_links(text=text))
 
 main()
