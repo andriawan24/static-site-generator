@@ -19,7 +19,6 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         for i in range(len(splitted)):
             if splitted[i] == "":
                 continue
-            
             if i % 2 == 0:
                 nodes.append(TextNode(splitted[i], TextType.NORMAL))
             else:
@@ -29,8 +28,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
     return new_nodes
 
-
-def text_node_to_html_code(text_node: TextNode):
+def text_node_to_html_node(text_node: TextNode):
     match text_node.text_type:
         case TextType.NORMAL:
             return LeafNode(value=text_node.text)
@@ -128,3 +126,12 @@ def split_nodes_link(old_nodes):
             result.append(TextNode(current_text, TextType.NORMAL))
 
     return result
+
+def text_to_textnodes(text: str):
+    nodes = [TextNode(text, TextType.NORMAL)]
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    return nodes
