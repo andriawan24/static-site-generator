@@ -27,7 +27,7 @@ def copy_files(source, destination, files):
 
 def copy_static_dir():
     static_path = get_directory("static")
-    public_path = get_directory("public")
+    public_path = get_directory("docs")
 
     if os.path.exists(public_path):
         shutil.rmtree(public_path)
